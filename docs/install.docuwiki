@@ -1,0 +1,206 @@
+====CKG Scrape to MediaWiki====
+
+The demo scrapes the content of the IPCC website and stores the data in Mediawiki and Wikibase.
+
+This project depends on [[https://www.gnu.org/software/wget/|GNU wget]] and [[:projects:wikibase|CPS Wikibase]].
+
+CPS Wikibase uses [[tools:wikibase#wikibase_docker_deployment|Wikibase docker deployment]].
+
+===CKG===
+
+Climate Knowledge Graph tools have been written to make the IPCC report cycle 6
+accessible by storing it in Mediawiki and Wikibase.
+
+A Wikibase instance must first be created which will contain both the wikidata
+and mediawiki content.
+
+Once the site is online and configured custom scripts are utilised to scrape the
+IPCC site and convert the content to mediawiki markup.
+
+Finally, using an XML configuration file Wikibase is populated using keyword tags
+to allow SPARQL queries to query for related mediawiki text.
+
+===Wikibase docker deployment===
+
+Follow the guide for [[https://wiki.kewl.org/tools:wikibase#wikibase_docker_deployment|Wikibase docker deployment]] but add these extra settings for Mediawiki in LocalSettings.php
+
+<code>
+$wgEnableUploads = true; # Enable uploads
+
+// Allow images up to 100MB
+$wgMaxUploadSize = 104857600;
+
+// Allow page content/wikitext up to 8MB (unit is KiB)
+$wgMaxArticleSize = 8192;
+
+$wgShowExceptionDetails = true;
+
+$wgGenerateThumbnailOnParse = false;
+$wgThumbnailScriptPath = "{$wgScriptPath}/thumb.php";
+</code>
+
+These settings are to allow large single page uploads and to stop the automatic generation of thumbnails when importing images which causes a problem. Instead thumbnails are generated as required.
+===Debian===
+
+This process for debian downloads and sets up the scrape and import scripts.
+
+==Setup==
+
+<code>
+sudo apt install python3 python3-venv pandoc python3-magic mercurial
+hg clone https://hg.kewl.org/pub/ckg_s2mw
+cd ckg_s2mw
+</code>
+
+==Create virtual environment==
+
+<code>
+python3 -m venv ~/.venvs/ckg_s2mw
+</code>
+
+or 
+<code>
+make venv
+</code>
+
+==Activate virtual environment==
+
+__TCSH__
+<code>
+source ~/.venvs/ckg_s2mw/bin/activate.csh
+</code>
+
+__BASH__
+<code>
+source ~/.venvs/ckg_s2mw/bin/activate
+</code>
+
+==Initial installation==
+
+<code>
+make install
+</code>
+
+==Update installation==
+
+<code>
+hg pull -u
+make
+</code>
+
+===Scrape===
+
+A script using wget is provided with a list of URLs to scrape into a local directory.
+
+For this example the directory is accessible via the web but this isn't necessary.
+
+NB a web scrape is a snapshot in time. There is no guarantee the this process is repeatable
+after the date that these scripts were written to work.
+
+==Setup==
+
+<code>
+mkdir -p /var/www/htdocs/www.example.com/IPCC
+cp etc/wget.sh /var/www/htdocs/www.example.com/IPCC
+cp etc/urls*txt /var/www/htdocs/www.example.com/IPCC
+cd /var/www/htdocs/www.example.com/IPCC
+</code>
+
+==Run==
+
+<code>
+./wget.sh
+</code>
+
+===Enviroment===
+
+After the scrape is complete return to the project directory and setup the environment configuration.
+
+This configuration is used by the python scripts to gain access to the mediawiki and wikibase site deployment.
+
+<code>
+cp dotenv .env
+vi .env
+</code>
+
+The config requires setting up Mediawiki bot from the wiki at "Special pages → Account management → Bot passwords".
+
+<code>
+MEDIAWIKI_URL="https://www.example.com/wiki/"
+MEDIAWIKI_HOST="www.example.com"
+MEDIAWIKI_USERNAME="User"
+MEDIAWIKI_PASSWORD="mybot@xxx"
+GATSBY_URL="https://www.ipcc.ch/report/ar6/"
+GATSBY_ROOT="/var/www/htdocs/www.example.com/IPCC/Gatsby/www.ipcc.ch/report/ar6/"
+WORDPRESS_URL="https://www.ipcc.ch/"
+WORDPRESS_ROOT="/var/www/htdocs/www.example.com/IPCC/WordPress/www.ipcc.ch/"
+ASSETS_URL="https://www.ipcc.ch/site/"
+CACHE_DIR="/var/www/htdocs/www.example.com/IPCC/assets/"
+</code>
+
+
+===Pandoc===
+
+Two scripts are provided to parse the Gatsby and WordPress CMS
+files to produce intermediary wikitext with Pandoc.
+
+These processes contain various hacks the resultant output
+is far from perfect.
+
+<code>
+gatsby -l "etc/urls_gatsby.txt"
+</code>
+
+<code>
+wordpress -l "etc/urls_wordpress.txt"
+</code>
+
+Both processes are IPCC site specific with various workarounds fixing URLs and styling. 
+===Wikitext===
+
+The pandoc Wikitext needs to processed and cleaned and this has two stages.
+
+These processes can only be applied once since they modify the pandoc output files from above.
+
+==Upload==
+
+The first parse of the wikitext obtains the media files and uploads them to Mediawiki
+
+<code>
+wikitext -u
+</code>
+
+==Clean==
+
+The second process fixes any side effects of the Pandoc conversion process and rewrites the media file links and writes the results to disk.
+
+<code>
+wikitext -w
+</code>
+
+===Mediawiki===
+
+This final wikitext process takes the cleaned up wikitext files from above and publishes them on mediawiki
+
+<code>
+mediawiki -l "etc/urls_gatsby.txt"
+</code>
+
+<code>
+mediawiki -l "etc/urls_wordpress.txt"
+</code>
+
+
+===Wikibase===
+
+Using the XML configuration for the IPCC scrape wikibase entries are created.
+
+<code>
+wbset etc/work.xml
+</code>
+
+Finally, the main mediawiki page "Main_Page" is written with links to the imported documents.
+
+<code>
+work
+</code>

@@ -1,48 +1,3 @@
-# CKG Scrape
-
-<img src="https://raw.githubusercontent.com/TIBHannover/climate-knowledge-graph/main/images/climatekg-logo.png" alt="ClimateKG logo" height="60">  <img src="https://raw.githubusercontent.com/TIBHannover/climate-knowledge-graph/main/images/tib-logo.png" alt="TIB – Leibniz Information Centre for Science and Technology logo" height="60">  <img src="https://raw.githubusercontent.com/TIBHannover/climate-knowledge-graph/main/images/semanticclimate-logo.jpg" alt="#semanticClimate logo" height="60"> 
-
-Funded by the <a href="https://www.tib.eu/en/research-development/project-overview/project-summary/climatekg">TIB Innovation Fund</a>.
-
-CKG Scrape is the data collection and publishing toolkit for the Climate Knowledge Graph project. It turns IPCC AR6 content into MediaWiki pages and Wikibase entries so the knowledge graph can support structured access, document distribution, and analysis.
-
-Main project repository: https://github.com/TIBHannover/climate-knowledge-graph
-
-CKG Scrape software documentation: https://wiki.kewl.org/projects:ckgscrape
-
-## Installation
-
-CKG Scrape: AKA `ckg_s2mw` is a Python package that scrapes IPCC content and prepares it for MediaWiki and Wikibase.
-
-### Prerequisites
-
-- Python 3.9 or newer
-- `pip` and `venv`
-- `pandoc`
-- `wget`
-- `mercurial` if you are cloning the original upstream repository
-- A MediaWiki / Wikibase instance if you plan to publish content
-
-### Clone the repository
-
-If you need the original Mercurial source, clone it with:
-
-```bash
-hg clone https://anonymous:anonymous@hg.kewl.org/pub/ckg_s2mw
-```
-
-### Create a virtual environment
-
-```bash
-python3 -m venv ~/.venvs/ckg_s2mw
-```
-
----
-
-## Install
-
-Documentation from: https://wiki.kewl.org/projects:ckgscrape
-
 ## CKG Scrape to MediaWiki
 
 The demo scrapes the content of the IPCC website and stores the data in MediaWiki and Wikibase.
@@ -245,10 +200,3 @@ Finally, the main MediaWiki page `Main_Page` is written with links to the import
 ```bash
 work
 ```
-
-
----
-
-## Licence
-
-Licence: [GPL-3.0-or-later](LICENSE)
