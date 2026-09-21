@@ -1,14 +1,11 @@
 # CKG Scrape
 
-<p align="center">
+<p align="left">
 	<a href="https://github.com/TIBHannover/climate-knowledge-graph">
-		<img src="https://raw.githubusercontent.com/TIBHannover/climate-knowledge-graph/main/images/climatekg-logo.png" alt="ClimateKG logo" width="280">
+		<img src="https://raw.githubusercontent.com/TIBHannover/climate-knowledge-graph/main/images/climatekg-logo.png" alt="ClimateKG logo" width="180">
 	</a>
-</p>
-
-<p align="center">
-	<img src="https://raw.githubusercontent.com/TIBHannover/climate-knowledge-graph/main/images/semanticclimate-logo.jpg" alt="#semanticClimate logo" width="220">
-	<img src="https://raw.githubusercontent.com/TIBHannover/climate-knowledge-graph/main/images/tib-logo.png" alt="TIB logo" width="220">
+	<img src="https://raw.githubusercontent.com/TIBHannover/climate-knowledge-graph/main/images/semanticclimate-logo.jpg" alt="#semanticClimate logo" width="180">
+	<img src="https://raw.githubusercontent.com/TIBHannover/climate-knowledge-graph/main/images/tib-logo.png" alt="TIB logo" width="180">
 </p>
 
 <p align="center">
