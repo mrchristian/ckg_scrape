@@ -4,7 +4,6 @@
 
 Funded by the <a href="https://www.tib.eu/en/research-development/project-overview/project-summary/climatekg">TIB Innovation Fund</a>.
 
-
 CKG Scrape is the data collection and publishing toolkit for the Climate Knowledge Graph project. It turns IPCC AR6 content into MediaWiki pages and Wikibase entries so the knowledge graph can support structured access, document distribution, and analysis.
 
 Main project repository: https://github.com/TIBHannover/climate-knowledge-graph
