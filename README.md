@@ -21,7 +21,7 @@ CKG Scrape: AKA `ckg_s2mw` is a Python package that scrapes IPCC content and pre
 - `pandoc`
 - `wget`
 - `mercurial` if you are cloning the original upstream repository
-- A MediaWiki / Wikibase instance if you plan to publish content
+- A MediaWiki / Wikibase instance for importing data 
 
 ### Clone the repository
 
